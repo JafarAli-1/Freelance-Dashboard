@@ -1,36 +1,170 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Freelance Dashboard
 
-## Getting Started
+تطبيق لوحة تحكم متكامل للمستقلين (Freelancers) لإدارة مشاريعهم وعملائهم وفواتيرهم.
 
-First, run the development server:
+## ✨ الميزات
+
+### 🏠 **لوحة التحكم الرئيسية**
+
+- نظرة عامة على الإحصائيات
+- عدد العملاء والمشاريع والفواتير
+- إجمالي الإيرادات
+- تنبيهات للفواتير المتأخرة
+- رسوم بيانية لتقدم المشاريع
+
+### 👥 **إدارة العملاء**
+
+- إضافة وتعديل وحذف العملاء
+- معلومات شاملة (الاسم، البريد، الهاتف)
+- تاريخ الإنشاء
+
+### 📋 **إدارة المشاريع**
+
+- إضافة وتعديل وحذف المشاريع
+- ربط المشاريع بالعملاء
+- تتبع نسبة الإنجاز
+- تاريخ التسليم
+- ربط المشروع بالمستخدم الحالي
+
+### 🧾 **إدارة الفواتير**
+
+- إنشاء فواتير جديدة
+- ربط الفواتير بالعملاء والمشاريع
+- حساب الضريبة والإجمالي تلقائياً
+- حالات متعددة (معلق، مدفوع، متأخر، ملغي)
+- أرقام فواتير تلقائية (INV-000001)
+- تاريخ الإصدار والاستحقاق
+
+## 🚀 التقنيات المستخدمة
+
+- **Frontend**: Next.js 15 + App Router
+- **UI Framework**: Mantine UI
+- **Database**: Supabase (PostgreSQL)
+- **Authentication**: Supabase Auth
+- **Styling**: CSS Modules + PostCSS
+- **Language**: TypeScript
+
+## 📦 التثبيت والتشغيل
+
+### المتطلبات
+
+- Node.js 18+
+- Yarn أو npm
+- حساب Supabase
+
+### خطوات التثبيت
+
+1. **استنساخ المشروع**
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <repository-url>
+cd my-app
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **تثبيت التبعيات**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+yarn install
+# أو
+npm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. **إعداد Supabase**
 
-## Learn More
+   - إنشاء مشروع جديد في [Supabase](https://supabase.com)
+   - نسخ `URL` و `anon key`
+   - إنشاء ملف `.env.local` من `.env.example` وتحديث القيم
 
-To learn more about Next.js, take a look at the following resources:
+4. **إعداد قاعدة البيانات**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   - تشغيل SQL Editor في Supabase
+   - نسخ ولصق محتوى ملف `database_schema.sql`
+   - التأكد من تفعيل RLS وسياسات الجداول (موجودة في الملف)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+5. **تشغيل التطبيق**
 
-## Deploy on Vercel
+```bash
+yarn dev
+# أو
+npm run dev
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+6. **فتح المتصفح**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+http://localhost:3000
+```
+
+## 🔧 إعداد البيئة
+
+أنشئ ملف `.env.local` في المجلد الجذر (أو انسخه من `.env.example`):
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+## 📊 هيكل قاعدة البيانات
+
+### الجداول الرئيسية
+
+- **clients**: معلومات العملاء
+- **projects**: المشاريع
+- **invoices**: الفواتير
+- **auth.users**: المستخدمين (تلقائي من Supabase)
+
+### العلاقات
+
+- كل مشروع مرتبط بعميل
+- كل فاتورة مرتبطة بعميل ومشروع (اختياري)
+- كل مستخدم يرى فقط بياناته
+
+## 🎨 التصميم
+
+- واجهة عربية بالكامل (RTL)
+- تصميم موحد بين جميع الصفحات
+- Badges ملونة لعرض البيانات
+- جداول منظمة مع إمكانية التمرير
+- Modals للعمليات
+
+## 🔒 الأمان
+
+- Row Level Security (RLS) مفعل
+- كل مستخدم يرى فقط بياناته
+- Middleware للحماية وإعادة التوجيه بين `/login` و`/dashboard`
+- دعم SSR عبر `@supabase/ssr` للوصول الآمن إلى الجلسة على السيرفر
+- مصادقة آمنة عبر Supabase
+
+## 🧭 ملاحظات المعمارية
+
+- `app/layout.tsx` Server Component مع `metadata` وإدراج `logo.png` في الأيقونات وOpenGraph/Twitter.
+- `components/Providers.tsx` Client Component لاحتضان Mantine.
+- `middleware.ts` يحمي `/dashboard` ويعيد توجيه المستخدمين المصادقين بعيداً عن `/login`.
+- `lib/supabaseServerClient.ts` للوصول إلى Supabase على السيرفر باستخدام الكوكيز.
+
+## 🚧 التطوير المستقبلي
+
+- [ ] توليد PDF للفواتير
+- [ ] إشعارات للفواتير المتأخرة
+- [ ] ربط مع PayPal/Stripe
+- [ ] CRM متقدم
+- [ ] تقارير شهرية مفصلة
+- [ ] تطبيق موبايل
+
+## 📝 الترخيص
+
+هذا المشروع مفتوح المصدر ومتاح للاستخدام الشخصي والتجاري.
+
+## 🤝 المساهمة
+
+نرحب بالمساهمات! يرجى:
+
+1. عمل Fork للمشروع
+2. إنشاء branch جديد
+3. عمل Commit للتغييرات
+4. عمل Push للbranch
+5. إنشاء Pull Request
+
+## 📞 الدعم
+
+لأي استفسارات أو مشاكل، يرجى فتح Issue في GitHub.
